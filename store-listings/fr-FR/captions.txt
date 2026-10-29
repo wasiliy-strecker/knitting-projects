@@ -1,0 +1,4 @@
+Parcourez vos projets avec leur statut, leurs photos et leurs notes.
+Modifiez ensemble le projet, la photo et le statut.
+Retrouvez votre prochain projet grâce à ses notes.
+Choisissez la langue du prochain démarrage.

@@ -1,0 +1,6 @@
+Projektname, Garn oder Material, Farbe, Ort und Notiz
+Genau ein optionales JPEG- oder PNG-Foto pro Projekt
+Status Geplant, Angefangen und Fertig
+Suche über alle fünf Textfelder
+Lokale Speicherung ohne Konto
+Sechs wählbare Oberflächensprachen

@@ -1,0 +1,4 @@
+Veja seus projetos com status, fotos e anotações.
+Edite o projeto, a foto e o status juntos.
+Encontre seu próximo projeto pelas anotações.
+Escolha o idioma para a próxima inicialização.

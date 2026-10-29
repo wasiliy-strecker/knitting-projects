@@ -1,0 +1,6 @@
+Project name, yarn or material, color, location and notes
+One optional JPEG or PNG photo per project
+Planned, Started and Finished status
+Search all five text fields
+Local storage without an account
+Six selectable interface languages

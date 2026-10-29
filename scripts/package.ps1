@@ -37,10 +37,11 @@ try {
     $Common = @(
         "--name", "StrickProjekt", "--app-version", $Version,
         "--vendor", "Wasiliy Strecker", "--description", "StrickProjekt - deine lokale Projektsammlung",
+        "--icon", "$Root\assets\branding\icon.ico",
         "--input", $InputDirectory, "--main-jar", "strickprojekt-$Version.jar",
         "--main-class", "de.appfabrik.strickprojekt.Launcher",
         "--module-path", "$env:JAVA_HOME\jmods;$Modules",
-        "--add-modules", "java.se,javafx.controls,jdk.unsupported",
+        "--add-modules", "java.se,javafx.controls,jdk.unsupported,jdk.localedata",
         "--java-options", "--add-modules=javafx.controls",
         "--java-options", "-Dfile.encoding=UTF-8"
     )

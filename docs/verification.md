@@ -1,6 +1,45 @@
 # Prüfbericht
 
-Stand: 26. Oktober 2026, StrickProjekt 0.1.0.
+Stand: 29. Oktober 2026, StrickProjekt 0.1.0.
+
+## Internationalisierung vom 29. Oktober 2026
+
+Die sechs Sprachkataloge haben jeweils 96 geprüfte Schlüssel. Die zusätzlichen
+Tests kontrollieren vollständige Kataloge, Platzhalter, regionale Zahlen,
+Statusübersetzungen, Sprachauflösung und atomare Einstellungen. Für jede Sprache
+bleibt eine vorhandene SQLite-Datei samt Unicode-Text, Foto und Status bytegenau
+unverändert, wenn ausschließlich die Spracheinstellung geschrieben wird.
+
+Der reproduzierbare GUI-Ablauf nutzt echte JavaFX-Fenster, native Fotoauswahl,
+Maus- und Tastaturereignisse auf einem eigenen Xvfb-Bildschirm. Pflichtfelder,
+Kontextmenüs, Fotoersatz und -entfernung, Unicode, lange Notizen, sichere
+Abbruchvorgaben und ein echter SQLite-Schreibfehler mit Wiederholung werden
+geprüft. Reiner Statusabbruch und direkte Wechsel zwischen allen drei Werten
+sind zusätzlich nachgewiesen. Der Neustart in einem neuen Prozess prüft
+Sprache, Text, Statuscode und Fotobytes gemeinsam.
+
+Das eigenständige Linux-App-Image enthält `jdk.localedata`, damit auch ohne
+installiertes JDK die regionalen Zahlenformate vorhanden sind. Der echte
+Launcher läuft außerhalb des Projekts mit eingebetteter JVM, ohne `JAVA_HOME`
+und mit `PATH=/nonexistent`. Eine vorhandene synthetische Schema-1-Sammlung mit
+1234 Projekten bleibt erhalten. Die Bedienung speichert Unicode, ein über den
+nativen Dialog ersetztes JPEG und den Status `finished`. Nach Entfernung der
+Bildquelle wechselt ein neuer Prozess von Französisch zu Englisch und zeigt
+das gespeicherte Foto samt Status. Die Laufzeitdateien bleiben unverändert.
+
+Der finale Sechssprachendurchlauf besteht mit 18 neuen JVM-Prozessen und
+510 GUI-Prüfassertionen. Die 24 unveränderten Store-Aufnahmen mit 1920 × 1080
+Pixeln wurden visuell kontrolliert. Auch die französische Gruppierung von
+1234 Projekten und die Paket-Neustartbilder wurden nach dem Locale-Modul-Fix
+visuell geprüft. Ruff-Formatprüfung, Ruff-Lint, Shell-Syntax und Git-Whitespace
+bestehen. Die neuen Werkzeuge erzeugen keine Lieferarchive.
+
+Finale Nachweise liegen in `target/gui-international-final` und
+`target/packaged-international-final`. Die Auslieferung prüft deren Hashes gegen
+den lokalen Commit. Die initialen Pilot- und Zwischenläufe werden nicht geliefert.
+
+Die genauen Wiederholungsbefehle, Ausgabestruktur und weiterhin ausstehende native
+Windows-Abnahme stehen in [Internationalisierung](internationalization.md).
 
 ## Automatische Prüfungen
 
@@ -14,7 +53,7 @@ bash -n scripts/run.sh scripts/package.sh
 git diff --cached --check
 ```
 
-65 JUnit-Testfälle bestanden. Compiler-Lint mit `-Werror`, Maven Enforcer,
+96 JUnit-Testfälle bestanden. Compiler-Lint mit `-Werror`, Maven Enforcer,
 Spotless und SpotBugs bestanden ohne Befunde.
 
 | Bereich | Geprüft |
@@ -26,7 +65,7 @@ Spotless und SpotBugs bestanden ohne Befunde.
 | Bildprüfung | JPEG/PNG nach Inhalt, falsche Endung, GIF, Text, leere und abgeschnittene Dateien, fehlende Datei, Verzeichnis |
 | Bildgrenzen | Mehr als 10 MiB, mehr als 6000 Pixel je Seite, mehr als 16 Millionen Pixel, zulässige Dimensionsgrenzen |
 | Statusstandard | Geplant bei neuen Entwürfen, gespeichertem Projekt und direktem SQL-INSERT ohne Status |
-| Fester Wertebereich | Genau drei Schlüssel und deutsche Anzeigen, ungültige Werte und `null` abgelehnt, SQLite-CHECK, beschädigter Fremdwert wird gemeldet und bleibt unverändert |
+| Fester Wertebereich | Genau drei Schlüssel und übersetzte Anzeigen, ungültige Werte und `null` abgelehnt, SQLite-CHECK, beschädigter Fremdwert wird gemeldet und bleibt unverändert |
 | Statusspeicherung | Alle drei Werte wiederhergestellt, Speicherung als expliziter Text statt Ordinalzahl oder deutscher Anzeige |
 | Statuswechsel | Jeder Status in jeden anderen und zurück, Erhalt von ID, allen Texten und vollständigen Fotobytes |
 | Atomare Fehler | AFTER-UPDATE-Trigger bricht Änderung ab, Texte/Foto/Status vollständig unverändert, erneutes Speichern gelingt. Fehlgeschlagenes INSERT hinterlässt kein Teilprojekt |
@@ -35,7 +74,7 @@ Spotless und SpotBugs bestanden ohne Befunde.
 Tests verwenden ausschließlich eigene temporäre SQLite-Dateien und erzeugte
 Bilder. Keine normalen Benutzersammlungen werden geöffnet.
 
-## Tatsächlich gestartete Oberfläche
+## Erste GUI-Abnahme vom 26. Oktober 2026
 
 Die JavaFX-Anwendung lief auf einem separaten Linux-Xvfb-Bildschirm. Maus- und
 Tastatureingaben über `xdotool`, native Dateiauswahl und echte Fensterereignisse

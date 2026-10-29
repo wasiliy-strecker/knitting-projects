@@ -1,0 +1,4 @@
+Sfoglia i progetti con stato, foto e note.
+Modifica insieme progetto, foto e stato.
+Trova il prossimo progetto tramite le note.
+Scegli la lingua per il prossimo avvio.

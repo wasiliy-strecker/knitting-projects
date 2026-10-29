@@ -1,0 +1,4 @@
+Projekte mit Status, Fotos und Notizen überblicken.
+Projekt, Foto und Status gemeinsam bearbeiten.
+Das nächste Projekt über seine Notizen finden.
+Sprache für den nächsten Start auswählen.

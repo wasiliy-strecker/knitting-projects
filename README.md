@@ -3,14 +3,27 @@
 Deine Ideen. Masche für Masche. Verwalte kleine Strick- und Häkelprojekte mit
 Projektname, Garn oder Material, Farbe, Aufbewahrungsort, Notiz und einem
 optionalen Foto. Der Status zeigt **Geplant**, **Angefangen** oder **Fertig**.
-Alles bleibt lokal und nach einem Neustart erhalten.
+Alles bleibt lokal und nach einem Neustart erhalten. Die Oberfläche unterstützt
+Deutsch, Englisch, Spanisch, Französisch, Italienisch und Portugiesisch (Brasilien).
 
 ![StrickProjekt mit synthetischen Testdaten](docs/screenshots/strickprojekt.png)
 
 Stufe 3 der Java-Reihe BücherRegal → GarnBox → StrickProjekt → NähPlan.
-KostümPlan bleibt die fünfte Reservestufe. Gegenüber GarnBox ergänzt diese App
+KostümPlan ist die separat umgesetzte fünfte Stufe. Gegenüber GarnBox ergänzt diese App
 genau den Projektstatus. Garn und Material sind Freitext ohne Verbindung zu
 GarnBox. Checklisten, PDF, Zähler, Cloud und weitere Hauptfunktionen fehlen bewusst.
+
+## Sprachen und Vorschau
+
+„Sprache“ speichert die Auswahl für den nächsten Start. Automatisch folgt der
+Systemsprache. Nicht unterstützte Sprachen verwenden Englisch. `language.txt`
+liegt neben der unveränderten `strickprojekt.db`. Projekttexte, Fotos und
+Statuscodes werden nicht übersetzt oder migriert.
+
+[Internationalisierung und reproduzierbare Linux-Vorschau](docs/internationalization.md)
+beschreibt die sechs Store-Textfassungen, 24 echten GUI-Aufnahmen, sichere
+synthetische Beispieldaten und die Ausgabe als Ordner ohne Archiv.
+Die native Windows-Abnahme und endgültige Windows-Store-Bilder stehen aus.
 
 ## Starten
 
@@ -103,7 +116,7 @@ Mit JDK 21 im `PATH`:
 ./mvnw verify
 ```
 
-`verify` umfasst 65 JUnit-Testfälle, Compiler-Lint mit Warnungen als Fehlern,
+`verify` umfasst 96 JUnit-Testfälle, Compiler-Lint mit Warnungen als Fehlern,
 Maven Enforcer, Spotless und SpotBugs. Tests erzeugen temporäre Datenbanken
 und synthetische Bilder. GUI-Prüfungen stehen im [Prüfbericht](docs/verification.md).
 

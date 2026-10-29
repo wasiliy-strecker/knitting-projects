@@ -1,0 +1,4 @@
+Consulta proyectos con su estado, fotos y notas.
+Edita el proyecto, la foto y el estado juntos.
+Encuentra tu próximo proyecto a través de sus notas.
+Elige el idioma para el próximo inicio.

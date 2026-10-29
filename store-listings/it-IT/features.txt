@@ -1,0 +1,6 @@
+Nome del progetto, filato o materiale, colore, posizione e note
+Una foto JPEG o PNG facoltativa per progetto
+Stati Pianificato, Iniziato e Finito
+Ricerca nei cinque campi di testo
+Archiviazione locale senza account
+Sei lingue di interfaccia selezionabili

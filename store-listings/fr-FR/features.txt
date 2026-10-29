@@ -1,0 +1,6 @@
+Nom du projet, fil ou matière, couleur, emplacement et notes
+Une photo JPEG ou PNG facultative par projet
+Statuts Prévu, Commencé et Terminé
+Recherche dans les cinq champs de texte
+Stockage local sans compte
+Six langues d’interface au choix

@@ -99,3 +99,13 @@ Quellen für die später erneut zu prüfenden Vorgaben:
 - [Apple: Distribution und App Sandbox](https://help.apple.com/xcode/mac/current/en.lproj/dev91fe7130a.html)
 - [Microsoft: Store-Überblick](https://learn.microsoft.com/en-us/windows/apps/publish/)
 - [GitHub: Verfügbare Runner](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job)
+
+## Internationalisierte Laufzeit
+
+Alle Pakethelfer binden `jdk.localedata` ein. So bleiben regionale Zahlenformate
+für die sechs App-Sprachen auch in der eingebetteten Laufzeit verfügbar. Das
+Linux-App-Image verwendet das app-lokale PNG-Icon, der Windows-Helfer das ICO.
+Die bestehende App-Kennung und Windows-Upgrade-ID bleiben unverändert.
+Der Linux-Prüfhelfer kontrolliert das Locale-Modul und die tatsächlich geladene
+Paket-JVM. Native Windows-Abnahme, Skalierung und Store-Ressourcenzuordnung
+stehen weiterhin aus. Siehe [Internationalisierung](internationalization.md).

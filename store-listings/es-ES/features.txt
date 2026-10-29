@@ -1,0 +1,6 @@
+Nombre del proyecto, hilo o material, color, ubicación y notas
+Una foto JPEG o PNG opcional por proyecto
+Estados Planificado, Empezado y Terminado
+Búsqueda en los cinco campos de texto
+Almacenamiento local sin cuenta
+Seis idiomas de interfaz seleccionables

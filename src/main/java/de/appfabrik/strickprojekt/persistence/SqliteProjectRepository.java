@@ -38,7 +38,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
     try {
       Path parent = database.getParent();
       if (parent == null) {
-        throw new StorageException("Der Datenbankpfad muss auf eine Datei zeigen.");
+        throw new StorageException(StorageException.Code.PATH);
       }
       Files.createDirectories(parent);
       try (Connection connection = connect()) {
@@ -50,8 +50,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
             version = result.getInt(1);
           }
           if (version > 1) {
-            throw new StorageException(
-                "Diese Sammlung wurde mit einer neueren App-Version erstellt. Bitte aktualisiere StrickProjekt.");
+            throw new StorageException(StorageException.Code.NEWER_SCHEMA);
           }
           if (version == 0) {
             statement.executeUpdate(
@@ -77,9 +76,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
         }
       }
     } catch (IOException | SQLException exception) {
-      throw new StorageException(
-          "Die Sammlung konnte nicht geöffnet werden. Bitte prüfe Zugriffsrechte und freien Speicherplatz und versuche es erneut.",
-          exception);
+      throw new StorageException(StorageException.Code.OPEN, exception);
     }
   }
 
@@ -105,9 +102,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
       }
       return List.copyOf(projects);
     } catch (IllegalArgumentException exception) {
-      throw new StorageException(
-          "Ein gespeicherter Projektstatus ist unbekannt. Bitte prüfe App-Version und Datensicherung. Die Sammlung bleibt unverändert.",
-          exception);
+      throw new StorageException(StorageException.Code.STATUS, exception);
     } catch (SQLException exception) {
       throw failure(exception);
     }
@@ -120,8 +115,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
       statement.setLong(1, id);
       try (var result = statement.executeQuery()) {
         if (!result.next()) {
-          throw new StorageException(
-              "Dieses Projekt ist nicht mehr vorhanden. Bitte lade die Sammlung neu.");
+          throw new StorageException(StorageException.Code.MISSING);
         }
         byte[] bytes = result.getBytes(1);
         return bytes == null ? null : PhotoImporter.decode(bytes);
@@ -129,9 +123,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
     } catch (SQLException exception) {
       throw failure(exception);
     } catch (PhotoException exception) {
-      throw new StorageException(
-          "Das gespeicherte Foto konnte nicht gelesen werden. Der Eintrag bleibt unverändert. Bitte prüfe deine Datensicherung.",
-          exception);
+      throw new StorageException(StorageException.Code.PHOTO, exception);
     }
   }
 
@@ -144,8 +136,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
       bind(statement, draft);
       try (ResultSet result = statement.executeQuery()) {
         if (!result.next()) {
-          throw new StorageException(
-              "Das Projekt konnte nicht angelegt werden. Bitte versuche es erneut.");
+          throw new StorageException(StorageException.Code.CREATE);
         }
         return draft.withId(result.getLong(1));
       }
@@ -193,14 +184,11 @@ public final class SqliteProjectRepository implements ProjectRepository {
 
   private static void requireExisting(int affected) {
     if (affected != 1) {
-      throw new StorageException(
-          "Dieses Projekt ist nicht mehr vorhanden. Bitte lade die Sammlung neu.");
+      throw new StorageException(StorageException.Code.MISSING);
     }
   }
 
   private static StorageException failure(SQLException exception) {
-    return new StorageException(
-        "Die Datenbank konnte den Vorgang nicht abschließen. Bitte schließe weitere StrickProjekt-Fenster und prüfe Zugriffsrechte und freien Speicherplatz. Deine Eingaben bleiben erhalten.",
-        exception);
+    return new StorageException(StorageException.Code.OPERATION, exception);
   }
 }

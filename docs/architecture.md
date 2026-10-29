@@ -1,6 +1,6 @@
 # Architektur und Bewerbungsgespräch
 
-StrickProjekt hat ein Maven-Modul mit vier kleinen Bereichen. Fotoimport,
+StrickProjekt hat ein Maven-Modul mit fünf kleinen Bereichen. Fotoimport,
 SQLite-Zugriff und Dialogführung wurden aus GarnBox gezielt angepasst. Die App
 besitzt eigene Quellen, Kennungen, Datenpfade und ein eigenes Git-Repository.
 Sie benötigt keine andere App zur Laufzeit. Der fachliche Unterschied ist
@@ -21,6 +21,7 @@ flowchart LR
 | `domain` | Records `Project`, `ProjectDraft`, unveränderliches `Photo` und Enum `ProjectStatus` |
 | `application` | Anlegen, Ändern, Löschen, Suche, Bildprüfung und Repository-Vertrag |
 | `persistence` | Benutzerdatenpfad, Schema-Version, JDBC, atomare SQL-Anweisungen |
+| `i18n` | Sechs UTF-8-Kataloge, feste Sprache pro App-Start und regionale Zahlen |
 | `ui` | JavaFX-Fenster, Arbeitsentwurf, Statusauswahl, Vorschau, Hintergrundaufgaben |
 
 `ProjectsApplication` verbindet die Komponenten durch Konstruktoren. Die
@@ -37,9 +38,9 @@ Formatierung und Zeilenumbrüche der Notiz bleiben unverändert.
 | `STARTED` | `started` | Angefangen |
 | `FINISHED` | `finished` | Fertig |
 
-`storedValue()` ist der stabile Speicherschlüssel, `displayName()` der lesbare
-Text. Es wird weder `ordinal()` noch der übersetzte Text gespeichert.
-Eine Umordnung der Enum-Konstanten oder geänderte deutsche Beschriftungen
+`storedValue()` ist der stabile Speicherschlüssel. `Messages.status()` liefert
+den übersetzten Text außerhalb des Domänenmodells. Es wird weder `ordinal()` noch der übersetzte Text gespeichert.
+Eine Umordnung der Enum-Konstanten oder geänderte übersetzte Beschriftungen
 beeinflussen die vorhandenen Daten damit nicht. `fromStoredValue()` übersetzt
 beim Lesen explizit zurück. Unbekannte Werte erzeugen einen verständlichen
 Speicherfehler. Sie werden niemals still auf Geplant zurückgesetzt.
@@ -51,7 +52,7 @@ Alle drei Werte dürfen direkt ineinander übergehen. Es gibt weder eine
 Übergangsmatrix noch Zeitstempel, Statushistorie oder automatische Änderungen.
 
 Die `ComboBox<ProjectStatus>` ist nicht editierbar und enthält die drei
-Enum-Werte. Ihre Zellen verwenden `displayName()`. Die Tabelle zeigt denselben
+Enum-Werte. Ihre Zellen verwenden `Messages.status()`. Die Tabelle zeigt denselben
 Text. Damit ist die Kennzeichnung unabhängig von Farbe.
 
 ## Ablauf: Projektstatus ändern und speichern
@@ -111,7 +112,7 @@ Datenbankversion.
 
 Die Suche arbeitet über alle fünf Textfelder der geladenen Records.
 Unicode-Normalisierung NFC und `Locale.ROOT` machen Umlautsuche unabhängig von
-Groß- und Kleinschreibung. Ein deutscher `Collator` sortiert die Ergebnisse.
+Groß- und Kleinschreibung. Ein `Collator` der gewählten Sprache sortiert die Ergebnisse.
 Die ID unterscheidet gleichnamige Projekte. Für kleine lokale Sammlungen genügt
 die lineare Suche. Status ist eine Auswahl und kein zusätzliches Freitextfeld.
 
@@ -121,7 +122,7 @@ die lineare Suche. Status ist eine Auswahl und kein zusätzliches Freitextfeld.
 | --- | --- |
 | Records für Texte und Foto | Enum als fester fachlicher Wertebereich |
 | Einfache Freitextfelder | Typisierte, nicht editierbare `ComboBox<ProjectStatus>` |
-| Speicherung von Text und BLOB | Explizite Trennung von Enum, Speicherschlüssel und deutscher Anzeige |
+| Speicherung von Text und BLOB | Explizite Trennung von Enum, Speicherschlüssel und übersetzter Anzeige |
 | Gemeinsames UPDATE | Atomare Erweiterung um Status mit SQLite-CHECK und Default |
 | Vergleich des Text- und Fotoentwurfs | Record-Gleichheit erkennt auch alleinige Statusänderungen |
 | Foto- und CRUD-Tests | Parametrisierte Tests aller Statuswerte und aller Wechsel in beide Richtungen |
@@ -144,3 +145,17 @@ Die Entscheidungen zur Auswahl und Fehlerbehandlung wurden mit der offiziellen
 [JavaFX-21-ComboBox-Dokumentation](https://openjfx.io/javadoc/21/javafx.controls/javafx/scene/control/ComboBox.html)
 und dem [SQLite-Verhalten bei ABORT](https://www.sqlite.org/lang_conflict.html)
 abgeglichen. Die Tests prüfen das tatsächliche Verhalten des verwendeten Treibers.
+
+## Sprachwahl und Fehlercodes
+
+`ProjectsApplication.init()` liest die kleine app-lokale Einstellungsdatei und
+legt eine unveränderliche `Messages`-Instanz für Fenster und Worker-Rückmeldungen
+an. Die automatische Auswahl folgt der Systemsprache. Englisch ist die feste
+Rückfallsprache. Die Sortierung nutzt die gewählte Sprache. Unicode-Suche und
+Originaltexte bleiben unabhängig von den übersetzten Beschriftungen.
+
+`LanguagePreferences` ersetzt `language.txt` atomar. Die Datenbank wird dabei
+nicht geöffnet oder geändert. Ein Schreibfehler erhält den Dialog und seine
+Auswahl. Ein Lesefehler wird in der verwendeten Systemsprache angezeigt.
+`StorageException.Code` und `PhotoException.Code` geben stabile Fehlerkategorien
+an die Oberfläche. Erst dort entstehen die übersetzten, sicheren Meldungen.

@@ -1,0 +1,5 @@
+StrickProjekt raccoglie le tue idee di maglia e uncinetto. Annota il nome del progetto, il filato o materiale, il colore, la posizione e le note personali. Aggiungi una foto facoltativa e scegli Pianificato, Iniziato o Finito.
+
+Cerca nei cinque campi di testo, modifica i progetti e controlla il loro stato. Le foto JPEG e PNG vengono salvate con ogni progetto. I file originali rimangono invariati.
+
+La raccolta rimane sul tuo computer. Non servono un account o una connessione Internet. L’interfaccia è disponibile in tedesco, inglese, spagnolo, francese, italiano e portoghese brasiliano. Le modifiche alla lingua si applicano al prossimo avvio.
