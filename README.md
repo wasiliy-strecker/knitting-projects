@@ -114,6 +114,16 @@ als Text sichtbar. Die Suche durchsucht alle fünf Textfelder unabhängig von
 Groß- und Kleinschreibung, einschließlich Umlauten. Leeren zeigt alle Projekte.
 Löschen verlangt eine Bestätigung.
 
+Die Spaltenüberschriften sortieren die Liste per Klick nach Projektname, Status,
+Material, Farbe oder Aufbewahrungsort. Ein Pfeil zeigt aufsteigende oder
+absteigende Reihenfolge. Die native Tabellenbedienung wechselt von aufsteigend
+zu absteigend und hebt beim nächsten Klick die Spaltensortierung wieder auf.
+Standard ist Projektname aufsteigend. Texte werden passend zur App-Sprache
+alphabetisch und ohne Unterscheidung der Groß- und Kleinschreibung verglichen.
+Status verwendet den angezeigten übersetzten Text, Farbe den Farbcode oder
+vorhandenen Farbtext. Suche, Speichern und Import behalten die aktive Sortierung.
+Eine weiterhin sichtbare Auswahl bleibt dem gleichen Projekt zugeordnet.
+
 Genau ein JPEG oder PNG kann hinzugefügt, ersetzt oder entfernt werden.
 Die App prüft den Bildinhalt und speichert eine eigene Kopie in SQLite.
 Die Quelldatei wird niemals verändert. Nach Verschieben oder Löschen der Quelle

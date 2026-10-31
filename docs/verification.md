@@ -1,5 +1,34 @@
 # Prüfbericht
 
+## Sortierbare Projektliste, 31. Oktober 2026
+
+Alle fünf Spalten verwenden die native JavaFX-Sortierung mit Richtungspfeil,
+Handzeiger und Hervorhebung der Überschrift beim Überfahren. Initial wird nach
+Projektname aufsteigend sortiert. Textvergleich mit Collator in der App-Sprache
+ohne Unterscheidung der Groß- und Kleinschreibung. Status sortiert den angezeigten
+Text. Nach einer Listenaktualisierung wird die gewählte Sortierung erneut
+angewendet, bevor das ausgewählte Projekt anhand seiner ID wiederhergestellt wird.
+
+Manuelle Abnahme durch den Nutzer, noch nicht ausgeführt:
+
+- Jede Überschrift anklicken und aufsteigende sowie absteigende Reihenfolge
+  samt Pfeil prüfen. Der dritte Klick hebt die jeweilige Spaltensortierung auf.
+- Namen mit gemischter Großschreibung, Umlauten und Akzenten vergleichen.
+  Leere optionale Felder und gleiche Werte müssen ohne Fehler sortierbar sein.
+- Ein Projekt auswählen und umsortieren. Notiz, Foto und Bearbeiten müssen
+  weiterhin zum ausgewählten Projekt gehören.
+- Absteigend nach Material sortieren, suchen und den Suchtext löschen.
+  Die Sortierrichtung muss erhalten bleiben, auch bei null Suchtreffern.
+- Ein Projekt hinzufügen, dessen Sortierwert bearbeiten, ein Projekt löschen
+  und eine Sicherung importieren. Die aktive Reihenfolge muss erhalten bleiben.
+
+Gemäß app-lokaler Vorgabe keine Test- oder GUI-Suite. Formatter, Compiler-Lint,
+Enforcer, Paketbau und SpotBugs bestanden mit
+`./mvnw --batch-mode --no-transfer-progress spotless:apply package spotbugs:check -Dmaven.test.skip=true`.
+Protokoll: `target/column-sorting-build.log`. Das bestehende Linux-App-Image
+wurde mit dem neuen App-JAR und der aktualisierten Anleitung geöffnet.
+Keine Änderungen an Laufzeit, Abhängigkeiten oder Datenformat.
+
 ## Übertragung des Yarn-Box-Stands, 31. Oktober 2026
 
 Übernommen wurden die Verbesserungen dieses Chats und die Nachkorrekturen
