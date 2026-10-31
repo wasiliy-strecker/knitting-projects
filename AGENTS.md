@@ -28,7 +28,7 @@ git diff --cached --check
 ```
 
 `run.sh` und `package.sh` verwenden bei fehlendem `JAVA_HOME` ein vorhandenes
-JDK unter `$HOME/.local/jdk-21`. Direkte Wrapper-Aufrufe benötigen `JAVA_HOME`
+JDK unter `$HOME/.local/share/strickprojekt/jdk-21.0.13+9`. Direkte Wrapper-Aufrufe benötigen `JAVA_HOME`
 und dessen `bin` im `PATH`. `./mvnw javafx:run` startet die Entwicklungsversion.
 Unter Windows `mvnw.cmd` verwenden.
 
@@ -74,3 +74,18 @@ Die Lieferung ist ein Ordner ohne ZIP oder anderes Archiv. Siehe
 
 Changelog unter `CODEX/changelog` im Workspace ergänzen. Keine Datenbanken,
 Build-Ausgaben oder Secrets committen. Kein Push oder Veröffentlichen ohne Auftrag.
+
+## Datenschutz und lokale Release-Vorbereitung
+
+Build und CI sind auf Eclipse Temurin 21.0.13+9 festgelegt. Eigene Installation
+je App verwenden. Datenschutzdialog und Store-Textexport verwenden dieselben
+sechs Ressourcen. Foto-, Status-, Checklisten- und PDF-Aussagen müssen dem
+Funktionsumfang dieser App entsprechen. Keine BücherRegal-JSON-Funktion allein
+wegen der gemeinsamen Oberfläche übernehmen.
+
+Der Dialog verwendet die tatsächlichen Fenstermaße nach nativen Größenkorrekturen
+und wird erst nach der Positionierung sichtbar. Destruktive Schaltflächen tragen
+die CSS-Klasse `danger` und einen roten Fokusrahmen.
+
+Microsoft Store: MSIX. Kostenloser GitHub-Download: EXE. Identitäten, Signierung,
+Windows-Abnahme und Veröffentlichung bleiben separate Release-Schritte.

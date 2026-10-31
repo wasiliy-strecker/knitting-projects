@@ -4,3 +4,4 @@ Status Planejado, Iniciado e Concluído
 Busca nos cinco campos de texto
 Armazenamento local sem conta
 Seis idiomas de interface disponíveis
+Ler a política de privacidade offline dentro do aplicativo

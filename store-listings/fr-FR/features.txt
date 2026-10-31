@@ -4,3 +4,4 @@ Statuts Prévu, Commencé et Terminé
 Recherche dans les cinq champs de texte
 Stockage local sans compte
 Six langues d’interface au choix
+Consulter la politique de confidentialité hors ligne dans l’application

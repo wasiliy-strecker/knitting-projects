@@ -27,6 +27,14 @@ Die native Windows-Abnahme und endgültige Windows-Store-Bilder stehen aus.
 
 ## Starten
 
+Build und CI verwenden Eclipse Temurin 21.0.13+9. Maven prüft Hersteller,
+Version und Buildnummer. Für direkte Maven-Aufrufe auf diesem Rechner:
+
+```bash
+export JAVA_HOME="$HOME/.local/share/strickprojekt/jdk-21.0.13+9"
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
 Entwicklung mit einem vollständigen JDK 21. `JAVA_HOME` zeigt auf das JDK und
 `PATH` enthält dessen `bin`-Verzeichnis. Der Maven Wrapper lädt Maven und
 Abhängigkeiten beim ersten Start. Die fertige App funktioniert offline.
@@ -44,7 +52,7 @@ Windows PowerShell:
 ```
 
 Im vorhandenen Linux-Workspace genügt `./scripts/run.sh`. Der Helfer findet bei
-fehlendem `JAVA_HOME` auch das JDK unter `$HOME/.local/jdk-21`.
+fehlendem `JAVA_HOME` auch das JDK unter `$HOME/.local/share/strickprojekt/jdk-21.0.13+9`.
 Das lokal gebaute Linux-App-Image startet mit seiner eingebetteten Laufzeit:
 
 ```bash
@@ -134,3 +142,27 @@ sind offen. Ein normaler Installer ist keine geprüfte Store-Version.
 Es wurde nichts gepusht oder veröffentlicht.
 
 [Hinweise zu Fremdkomponenten](THIRD_PARTY_NOTICES.md).
+
+## Datenschutz und Fokusrahmen
+
+„Info“ öffnet die vollständige Datenschutzerklärung offline in der ausgewählten
+App-Sprache. Der Dialog ist scrollbar, schreibgeschützt und kopierbar.
+Escape oder „Schließen“ führen zurück. Er wird erst nach der Positionierung
+sichtbar, damit die anfängliche Korrektur der Fensterposition verborgen bleibt.
+Die Erklärung beschreibt die tatsächlich gespeicherten Texte, Fotos und die
+jeweiligen Projektfunktionen. Originalfotos werden nicht verändert.
+
+Löschschaltflächen erhalten einen roten Fokusrahmen. Die übrigen Schaltflächen
+behalten die jeweilige App-Farbe. Die Auswahlfläche der Tabelle bleibt sichtbar,
+der zusätzliche Rahmen der fokussierten Tabellenzeile ist transparent.
+
+Die sechs identischen Texte für Partner Center lassen sich aus den Ressourcen
+in einen neuen Ausgabeordner exportieren:
+
+```bash
+./scripts/export_privacy.sh target/privacy-texts
+```
+
+Ein vorhandener Ausgabeordner wird nicht überschrieben. Die vorhandenen
+Prüfbedingungen für Vorschau-Lieferungen bleiben bestehen. Der neue Datenschutz-
+ordner wird erst mit einer erneut geprüften Lieferung erzeugt.

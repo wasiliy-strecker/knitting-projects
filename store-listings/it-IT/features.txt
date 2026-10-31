@@ -4,3 +4,4 @@ Stati Pianificato, Iniziato e Finito
 Ricerca nei cinque campi di testo
 Archiviazione locale senza account
 Sei lingue di interfaccia selezionabili
+Leggere l’informativa sulla privacy offline nell’app

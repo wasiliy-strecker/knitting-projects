@@ -4,3 +4,4 @@ Status Geplant, Angefangen und Fertig
 Suche über alle fünf Textfelder
 Lokale Speicherung ohne Konto
 Sechs wählbare Oberflächensprachen
+Die Datenschutzerklärung direkt in der App offline lesen

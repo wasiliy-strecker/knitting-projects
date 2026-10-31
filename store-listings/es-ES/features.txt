@@ -4,3 +4,4 @@ Estados Planificado, Empezado y Terminado
 Búsqueda en los cinco campos de texto
 Almacenamiento local sin cuenta
 Seis idiomas de interfaz seleccionables
+Leer la política de privacidad sin conexión dentro de la aplicación

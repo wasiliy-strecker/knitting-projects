@@ -4,3 +4,4 @@ Planned, Started and Finished status
 Search all five text fields
 Local storage without an account
 Six selectable interface languages
+Read the privacy policy offline inside the app
