@@ -3,6 +3,23 @@
 Eigenständiges Java-Projekt mit eigenem Git-Repository. Die übergeordneten
 Workspace-Regeln gelten ergänzend. BücherRegal und GarnBox nicht verändern.
 
+## Englische technische Kennungen
+
+Nutzerentscheidung vom 31. Oktober 2026: Auch technische App-IDs immer englisch
+benennen. Das gilt für Bundle-IDs, Application-IDs, Paket-IDs und selbst gewählte
+Store-Kennungen. Den App-Anteil aus dem englischen Produktnamen ableiten,
+nicht aus einem deutschen Arbeitstitel. Organisationspräfix und Plattformsyntax
+beibehalten. Die zentrale AGENTS.md enthält die appübergreifende Regel.
+
+Für die besprochene neue Apple-Registrierung von Knitting Projects ist
+`de.appfabrik.knittingprojects` vorgesehen. Der bisherige macOS-Pakethelfer
+verwendet noch `de.appfabrik.strickprojekt`. Vor dem zugehörigen Store-Build
+die Bundle-Konfiguration und Paketierungsanleitung konsistent anpassen.
+Die ältere Vorgabe zum Erhalt der Paket-ID gilt weiterhin für bestehende
+Installationen, ist aber keine Begründung für eine neue deutsche Apple-ID.
+Registrierte oder veröffentlichte Kennungen nur mit bewusster Migration ändern.
+Diese Namensregel allein ändert weder Datenpfade noch Signieridentitäten.
+
 ## Umfang und Architektur
 
 Stufe 3 des Hobby-Portfolios. Projekte mit Name, Garn oder Material, Farbe, Ort,
