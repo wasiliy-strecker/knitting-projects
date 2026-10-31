@@ -10,8 +10,8 @@ import sys
 import tempfile
 
 APP_ID = "de.appfabrik.strickprojekt"
-APP_NAME = "StrickProjekt"
-LAUNCHER = "StrickProjekt"
+APP_NAME = "Knitting Projects"
+LAUNCHER = "Knitting Projects"
 WINDOW_CLASS = "de.appfabrik.strickprojekt.ui.ProjectsApplication"
 MARKER = "X-AppFabrik-Managed=true"
 

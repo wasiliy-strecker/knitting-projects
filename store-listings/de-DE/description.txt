@@ -1,4 +1,4 @@
-StrickProjekt hält deine Strick- und Häkelideen zusammen. Erfasse Projektname, Garn oder Material, Farbe, Aufbewahrungsort und persönliche Notizen. Ergänze genau ein optionales Foto und wähle Geplant, Angefangen oder Fertig.
+Knitting Projects hält deine Strick- und Häkelideen zusammen. Erfasse Projektname, Garn oder Material, Farbe, Aufbewahrungsort und persönliche Notizen. Ergänze genau ein optionales Foto und wähle Geplant, Angefangen oder Fertig.
 
 Durchsuche alle fünf Textfelder, bearbeite Projekte und behalte ihren Status im Blick. JPEG- und PNG-Fotos werden beim Projekt gespeichert. Deine Originaldateien bleiben unverändert.
 

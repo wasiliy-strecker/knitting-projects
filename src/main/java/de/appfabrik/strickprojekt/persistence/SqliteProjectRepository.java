@@ -1,7 +1,12 @@
 package de.appfabrik.strickprojekt.persistence;
 
+import de.appfabrik.strickprojekt.application.CollectionImportRepository;
+import de.appfabrik.strickprojekt.application.CollectionLimitException;
+import de.appfabrik.strickprojekt.application.CollectionLimits;
+import de.appfabrik.strickprojekt.application.ImportResult;
 import de.appfabrik.strickprojekt.application.PhotoException;
 import de.appfabrik.strickprojekt.application.PhotoImporter;
+import de.appfabrik.strickprojekt.application.ProjectImportSource;
 import de.appfabrik.strickprojekt.application.ProjectRepository;
 import de.appfabrik.strickprojekt.application.StorageException;
 import de.appfabrik.strickprojekt.domain.Photo;
@@ -9,18 +14,25 @@ import de.appfabrik.strickprojekt.domain.Project;
 import de.appfabrik.strickprojekt.domain.ProjectDraft;
 import de.appfabrik.strickprojekt.domain.ProjectStatus;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HexFormat;
 import java.util.List;
 import org.sqlite.SQLiteConfig;
 
 /** Opens and closes one JDBC connection per operation. No connection escapes this class. */
-public final class SqliteProjectRepository implements ProjectRepository {
+public final class SqliteProjectRepository
+    implements ProjectRepository, CollectionImportRepository {
   private final Path database;
 
   public SqliteProjectRepository(Path database) {
@@ -82,8 +94,18 @@ public final class SqliteProjectRepository implements ProjectRepository {
 
   @Override
   public List<Project> findAll() {
-    try (Connection connection = connect();
-        var statement = connection.createStatement();
+    try (Connection connection = connect()) {
+      connection.setAutoCommit(false);
+      return readProjects(connection);
+    } catch (IllegalArgumentException exception) {
+      throw new StorageException(StorageException.Code.STATUS, exception);
+    } catch (SQLException exception) {
+      throw failure(exception);
+    }
+  }
+
+  private static List<Project> readProjects(Connection connection) throws SQLException {
+    try (var statement = connection.createStatement();
         var result =
             statement.executeQuery(
                 "SELECT id, name, material, color, location, note, status, photo IS NOT NULL AS has_photo FROM projects")) {
@@ -101,11 +123,105 @@ public final class SqliteProjectRepository implements ProjectRepository {
                 ProjectStatus.fromStoredValue(result.getString("status"))));
       }
       return List.copyOf(projects);
-    } catch (IllegalArgumentException exception) {
-      throw new StorageException(StorageException.Code.STATUS, exception);
+    }
+  }
+
+  @Override
+  public ImportResult importProjects(ProjectImportSource source) {
+    try (Connection connection = connect()) {
+      connection.setAutoCommit(false);
+      try {
+        var available = new HashMap<String, Integer>();
+        int[] counts = new int[2];
+        long originalCount;
+        try (var statement = connection.createStatement();
+            var result = statement.executeQuery("SELECT count(*) FROM projects")) {
+          result.next();
+          originalCount = result.getLong(1);
+        }
+        MessageDigest digest = sha256();
+        try (var existing =
+                connection.prepareStatement(
+                    "SELECT count(*) FROM projects WHERE name = ? AND material = ? AND color = ?"
+                        + " AND location = ? AND note = ? AND photo IS ? AND status = ?");
+            var insert =
+                connection.prepareStatement(
+                    "INSERT INTO projects (name, material, color, location, note, photo, status) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+          source.read(
+              draft -> {
+                CollectionLimits.validate(draft);
+                String key = fingerprint(draft, digest);
+                try {
+                  Integer copies = available.get(key);
+                  if (copies == null) {
+                    bind(existing, draft);
+                    try (var result = existing.executeQuery()) {
+                      if (!result.next()) {
+                        throw new SQLException("Missing duplicate count");
+                      }
+                      copies = result.getInt(1);
+                    }
+                  }
+                  if (copies > 0) {
+                    available.put(key, copies - 1);
+                    counts[1]++;
+                  } else {
+                    if (originalCount + counts[0] >= CollectionLimits.MAX_ENTRIES) {
+                      throw new CollectionLimitException(CollectionLimitException.Code.ENTRIES);
+                    }
+                    available.put(key, 0);
+                    bind(insert, draft);
+                    if (insert.executeUpdate() != 1) {
+                      throw new SQLException("Incomplete collection import");
+                    }
+                    counts[0]++;
+                  }
+                } catch (SQLException exception) {
+                  throw failure(exception);
+                }
+              });
+        }
+        var result = new ImportResult(counts[0], counts[1], readProjects(connection));
+        connection.commit();
+        return result;
+      } catch (SQLException | RuntimeException exception) {
+        connection.rollback();
+        throw exception;
+      }
     } catch (SQLException exception) {
       throw failure(exception);
     }
+  }
+
+  private static MessageDigest sha256() {
+    try {
+      return MessageDigest.getInstance("SHA-256");
+    } catch (NoSuchAlgorithmException impossible) {
+      throw new IllegalStateException("SHA-256 is required by the Java runtime", impossible);
+    }
+  }
+
+  private static String fingerprint(ProjectDraft draft, MessageDigest digest) {
+    digest.reset();
+    for (String value :
+        List.of(
+            draft.name(),
+            draft.material(),
+            draft.color(),
+            draft.location(),
+            draft.note(),
+            draft.status().storedValue())) {
+      byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+      digest.update(ByteBuffer.allocate(Integer.BYTES).putInt(bytes.length).array());
+      digest.update(bytes);
+    }
+    byte[] photo = draft.photo() == null ? null : draft.photo().bytes();
+    digest.update(
+        ByteBuffer.allocate(Integer.BYTES).putInt(photo == null ? -1 : photo.length).array());
+    if (photo != null) {
+      digest.update(photo);
+    }
+    return HexFormat.of().formatHex(digest.digest());
   }
 
   @Override
@@ -129,14 +245,16 @@ public final class SqliteProjectRepository implements ProjectRepository {
 
   @Override
   public Project create(ProjectDraft draft) {
+    CollectionLimits.validate(draft);
     try (Connection connection = connect();
         PreparedStatement statement =
             connection.prepareStatement(
-                "INSERT INTO projects (name, material, color, location, note, photo, status) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id")) {
+                "INSERT INTO projects (name, material, color, location, note, photo, status) SELECT ?, ?, ?, ?, ?, ?, ? WHERE (SELECT count(*) FROM projects) < ? RETURNING id")) {
       bind(statement, draft);
+      statement.setInt(8, CollectionLimits.MAX_ENTRIES);
       try (ResultSet result = statement.executeQuery()) {
         if (!result.next()) {
-          throw new StorageException(StorageException.Code.CREATE);
+          throw new CollectionLimitException(CollectionLimitException.Code.ENTRIES);
         }
         return draft.withId(result.getLong(1));
       }
@@ -147,6 +265,7 @@ public final class SqliteProjectRepository implements ProjectRepository {
 
   @Override
   public Project update(long id, ProjectDraft draft) {
+    CollectionLimits.validate(draft);
     try (Connection connection = connect();
         PreparedStatement statement =
             connection.prepareStatement(

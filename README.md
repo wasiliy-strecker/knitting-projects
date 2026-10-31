@@ -1,4 +1,4 @@
-# StrickProjekt
+# Knitting Projects
 
 Deine Ideen. Masche für Masche. Verwalte kleine Strick- und Häkelprojekte mit
 Projektname, Garn oder Material, Farbe, Aufbewahrungsort, Notiz und einem
@@ -6,12 +6,57 @@ optionalen Foto. Der Status zeigt **Geplant**, **Angefangen** oder **Fertig**.
 Alles bleibt lokal und nach einem Neustart erhalten. Die Oberfläche unterstützt
 Deutsch, Englisch, Spanisch, Französisch, Italienisch und Portugiesisch (Brasilien).
 
-![StrickProjekt mit synthetischen Testdaten](docs/screenshots/strickprojekt.png)
+![Knitting Projects mit synthetischen Testdaten](docs/screenshots/strickprojekt.png)
 
-Stufe 3 der Java-Reihe BücherRegal → GarnBox → StrickProjekt → NähPlan.
+Stufe 3 der Java-Reihe BücherRegal → GarnBox → Knitting Projects → NähPlan.
 KostümPlan ist die separat umgesetzte fünfte Stufe. Gegenüber GarnBox ergänzt diese App
 genau den Projektstatus. Garn und Material sind Freitext ohne Verbindung zu
 GarnBox. Checklisten, PDF, Zähler, Cloud und weitere Hauptfunktionen fehlen bewusst.
+
+## Verbesserungen vom 31. Oktober 2026
+
+Öffentlicher Name in allen Sprachen: **Knitting Projects**. Paketkennung und Datenpfade
+bleiben unverändert. Neue Installationen starten auf Englisch, unabhängig von
+der Systemsprache. Eine vorhandene Sprachwahl einschließlich „Automatisch“
+bleibt erhalten. Die erste Store-Veröffentlichung wird auf Deutsch vorbereitet.
+
+Hinzufügen und Bearbeiten öffnen sich zentriert über dem Hauptfenster.
+Beim Laden des Editors blinkt die Tabelle nicht mehr. „Neu laden“ entfällt.
+Speichern, Löschen und Import aktualisieren die Liste automatisch.
+
+Die optionale Farbe wird über einen Farbwähler gewählt. Die Liste zeigt ein
+Farbfeld und einen auch bei Auswahl lesbaren Hexwert. Bestehende Farbtexte
+bleiben erhalten, bis bewusst eine Farbe gewählt oder entfernt wird.
+
+Neu gewählte oder ersetzte Fotos werden proportional auf höchstens 1600 Pixel
+an der längsten Seite verkleinert. Kleine Bilder werden nicht vergrößert.
+Bilder ohne Transparenz werden JPEG mit Qualität 85 %, transparente Bilder PNG.
+EXIF-Ausrichtung wird auf die Pixel angewendet, Quellmetadaten werden nicht
+übernommen. Die Eingabegrenzen bleiben 10 MiB, 6000 Pixel je Seite und
+16 Millionen Pixel. Originaldateien, bestehende Fotos und aus JSON
+wiederhergestellte Fotobytes bleiben unverändert.
+Die Fotoauswahl merkt sich den letzten bestätigten Ordner appweit und über
+Neustarts hinweg in `photo-directory.txt`. Bei nicht erreichbarem Ordner wird
+der Bilder- oder Benutzerordner verwendet. Abbrechen ändert die Einstellung
+nicht. Die Ordnereinstellung gehört nicht zur Sammlungssicherung.
+
+„Exportieren“ und „Importieren“ in der Fußleiste übertragen die gesamte
+Sammlung als JSON, unabhängig von Suchfilter oder Auswahl. Enthalten sind
+Texte, Hexfarben oder alte Farbtexte, Fotos als Base64 und der Projektstatus.
+
+Das app-eigene Format heißt `knitting-projects.collection`, Version 1.
+Import ergänzt atomar. Identische Kopien werden einschließlich ihrer Anzahl
+berücksichtigt, sodass wiederholter Import keine weiteren Duplikate erzeugt.
+Ungültige Dateien oder Fotos führen zum vollständigen Abbruch. Andere
+App-Formate werden nicht als eigene Sicherung eingelesen. Vorhandene
+Exportdateien werden nicht überschrieben.
+
+Es gelten höchstens 10.000 Projekte, 1.048.576 Zeichen je Textfeld und 256 MiB
+je JSON-Datei.
+Auch der Export prüft diese Grenzen vor Übernahme der Zieldatei.
+Bereits vorhandene größere Sammlungen werden nicht gekürzt. Ihre Einträge
+bleiben lesbar, bearbeitbar und löschbar. Für eine vollständige Dateisicherung
+außerhalb dieser Exportgrenzen die App schließen und die Datenbank kopieren.
 
 ## Sprachen und Vorschau
 
@@ -56,7 +101,7 @@ fehlendem `JAVA_HOME` auch das JDK unter `$HOME/.local/share/strickprojekt/jdk-2
 Das lokal gebaute Linux-App-Image startet mit seiner eingebetteten Laufzeit:
 
 ```bash
-./target/app-image/StrickProjekt/bin/StrickProjekt
+"./target/app-image/Knitting Projects/bin/Knitting Projects"
 ```
 
 ## Bedienung
@@ -114,7 +159,7 @@ Isolierter Teststart mit einem eigenen absoluten Pfad:
 
 ```bash
 ./scripts/run.sh '-Djavafx.args=--data-dir=/tmp/strickprojekt-test'
-./target/app-image/StrickProjekt/bin/StrickProjekt --data-dir=/tmp/strickprojekt-test
+"./target/app-image/Knitting Projects/bin/Knitting Projects" --data-dir=/tmp/strickprojekt-test
 ```
 
 Mit JDK 21 im `PATH`:
@@ -176,7 +221,7 @@ Anwendungseintrag demselben Icon zu.
 Nach dem Linux-App-Image-Bau aus diesem App-Verzeichnis registrieren:
 
 ```bash
-python3 target/app-image/StrickProjekt/install_desktop.py
+python3 "target/app-image/Knitting Projects/install_desktop.py"
 ```
 
 Danach lässt sich die App über ihren Namen in der Ubuntu-Anwendungsübersicht

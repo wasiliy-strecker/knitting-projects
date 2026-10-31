@@ -1,4 +1,4 @@
-StrickProjekt reúne tus ideas de punto y ganchillo. Anota el nombre del proyecto, hilo o material, color, ubicación y notas personales. Añade una foto opcional y elige Planificado, Empezado o Terminado.
+Knitting Projects reúne tus ideas de punto y ganchillo. Anota el nombre del proyecto, hilo o material, color, ubicación y notas personales. Añade una foto opcional y elige Planificado, Empezado o Terminado.
 
 Busca en los cinco campos de texto, edita proyectos y consulta su estado. Las fotos JPEG y PNG se guardan con cada proyecto. Los archivos originales no se modifican.
 

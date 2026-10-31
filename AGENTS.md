@@ -1,4 +1,4 @@
-# StrickProjekt
+# Knitting Projects
 
 Eigenständiges Java-Projekt mit eigenem Git-Repository. Die übergeordneten
 Workspace-Regeln gelten ergänzend. BücherRegal und GarnBox nicht verändern.
@@ -22,7 +22,7 @@ Aus dem App-Verzeichnis mit vollständigem JDK 21:
 ./mvnw verify
 ./scripts/run.sh
 ./scripts/package.sh app-image
-./target/app-image/StrickProjekt/bin/StrickProjekt
+"./target/app-image/Knitting Projects/bin/Knitting Projects"
 bash -n scripts/run.sh scripts/package.sh
 git diff --cached --check
 ```
@@ -80,8 +80,8 @@ Build-Ausgaben oder Secrets committen. Kein Push oder Veröffentlichen ohne Auft
 Build und CI sind auf Eclipse Temurin 21.0.13+9 festgelegt. Eigene Installation
 je App verwenden. Datenschutzdialog und Store-Textexport verwenden dieselben
 sechs Ressourcen. Foto-, Status-, Checklisten- und PDF-Aussagen müssen dem
-Funktionsumfang dieser App entsprechen. Keine BücherRegal-JSON-Funktion allein
-wegen der gemeinsamen Oberfläche übernehmen.
+Funktionsumfang dieser App entsprechen. Der Sammlungstransfer ist durch den ausdrücklichen Auftrag vom 31. Oktober
+2026 autorisiert. App-eigenes Format verwenden und zusätzliche Projektfelder erhalten.
 
 Der Dialog verwendet die tatsächlichen Fenstermaße nach nativen Größenkorrekturen
 und wird erst nach der Positionierung sichtbar. Destruktive Schaltflächen tragen
@@ -89,3 +89,30 @@ die CSS-Klasse `danger` und einen roten Fokusrahmen.
 
 Microsoft Store: MSIX. Kostenloser GitHub-Download: EXE. Identitäten, Signierung,
 Windows-Abnahme und Veröffentlichung bleiben separate Release-Schritte.
+
+## Übertragene Verbesserungen, 31. Oktober 2026
+
+Vorlage ist Yarn Box einschließlich der Nachkorrekturen bis `7fc3363`.
+Farbwähler mit Erhalt alter Texte, lesbare Farbcodes, zentrierte Dialoge ohne
+Tabellenblinken, gemerkter Fotoordner und kein Neuladen-Button.
+Neue Fotos höchstens 1600 Pixel längste Seite ohne Vergrößerung, JPEG 0,85
+beziehungsweise PNG bei Transparenz. EXIF-Ausrichtung anwenden, Quellmetadaten
+nicht übernehmen. Datenbank- und JSON-Fotos nur prüfen, niemals neu codieren.
+
+Öffentlicher Name ist **Knitting Projects**, Paket-ID und Datenpfade bleiben erhalten.
+Englisch beim Erststart, bestehende Sprachwahl behalten. Erste Store-Sprache
+de-DE. Alle sechs UI-Kataloge einschließlich Fehlermeldungen vollständig halten.
+JSON-Format `knitting-projects.collection`, Version 1. Import atomar ergänzend,
+keine Bestandsüberschreibung. Duplikatanzahl aus den Inhalten berücksichtigen.
+Status müssen vollständig übertragen werden.
+Höchstens 10.000 Projekte und 1.048.576 Zeichen je Textfeld, 256 MiB je JSON.
+Neuanlagen und Importe atomar begrenzen. Größere Altbestände nicht kürzen.
+Exportgrenzen vor Veröffentlichung prüfen, temporäre Dateien bereinigen.
+
+Desktop-Start aus Agentensitzungen über `systemd-run --user --property=Type=exec`
+mit übernommenem DISPLAY und XAUTHORITY, damit die App nach Tool-Ende offen
+bleibt. Zuerst nach vorhandenen Fenstern suchen und keine zweite Instanz der
+Sammlung öffnen. Ungespeicherte Entwürfe vor Neustart schützen.
+
+Der Nutzer übernimmt in diesem Auftrag die Tests selbst. Paketbau mit
+`-Dmaven.test.skip=true` und statische Analyse, keine Test- oder GUI-Suite.

@@ -159,3 +159,24 @@ nicht geöffnet oder geändert. Ein Schreibfehler erhält den Dialog und seine
 Auswahl. Ein Lesefehler wird in der verwendeten Systemsprache angezeigt.
 `StorageException.Code` und `PhotoException.Code` geben stabile Fehlerkategorien
 an die Oberfläche. Erst dort entstehen die übersetzten, sicheren Meldungen.
+
+## Sammlungstransfer und Fotooptimierung, 31. Oktober 2026
+
+`PhotoImporter.read` optimiert neue Dateiauswahlen über `PhotoOptimizer` und
+`PhotoOrientation`. `decode` erhält bestehende Datenbank- und Sicherungsbytes.
+`PhotoDirectoryPreferences` verwaltet die Navigationseinstellung app-lokal.
+`ProjectColorField` bewahrt Alttexte bis zur bewussten Farbauswahl.
+`UiSupport.centerAfterLayout` positioniert Dialoge vor dem Sichtbarwerden.
+Ein Eingabefilter sperrt das Hauptfenster beim Editorstart ohne Disable-Blinken.
+
+`CollectionExport`, `CollectionImport`, `CollectionFile` und
+`CollectionImportRepository` bilden app-lokale Ports ohne gemeinsame Runtime.
+`JsonCollectionFile` prüft Formatversion, Schlüssel, Typen, Unicode, Bilder,
+Eintragszahl und tatsächliche UTF-8-Dateigröße. `CollectionLimits` verwendet
+in beiden Richtungen dieselben Grenzen. SQLite begrenzt Neuanlagen innerhalb
+der INSERT-Anweisung. Der gesamte ergänzende Import einschließlich Endprüfung
+liegt in einer Transaktion. Fehler rollen alle Änderungen zurück.
+
+Die Erkennung vorhandener Kopien berücksichtigt sämtliche Texte, Fotobytes
+und den stabilen Statusschlüssel. Ein Zähler erhält die Anzahl gleicher Kopien
+im Export. Fotos bleiben bei Export und Wiederherstellung bytegleich.

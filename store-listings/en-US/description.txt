@@ -1,4 +1,4 @@
-StrickProjekt keeps your knitting and crochet ideas together. Record a project name, yarn or material, color, storage location and personal notes. Add one optional photo and choose Planned, Started or Finished.
+Knitting Projects keeps your knitting and crochet ideas together. Record a project name, yarn or material, color, storage location and personal notes. Add one optional photo and choose Planned, Started or Finished.
 
 Search all five text fields, edit projects and keep track of their status. JPEG and PNG photos are stored with each project. Your original image files stay unchanged.
 

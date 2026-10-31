@@ -1,5 +1,43 @@
 # Prüfbericht
 
+## Übertragung des Yarn-Box-Stands, 31. Oktober 2026
+
+Übernommen wurden die Verbesserungen dieses Chats und die Nachkorrekturen
+bis Yarn-Box-Commit `7fc3363`: Dialogzentrierung, Editor ohne Tabellenblinken,
+Farbauswahl mit lesbaren Farbcodes und Alttext-Erhalt, Fotooptimierung,
+gemerkter Fotoordner, ergänzender JSON-Transfer, Sicherungsgrenzen,
+entfernte Neuladen-Schaltfläche, englischer Produktname und englischer Erststart.
+Status werden im app-eigenen JSON-Format gesichert.
+
+Auf ausdrücklichen Nutzerwunsch keine Tests und keine automatisierten
+GUI-Abläufe. Formatter, Compiler-Lint, Enforcer, Paketbau und SpotBugs bestanden mit
+`./mvnw --no-transfer-progress spotless:apply package spotbugs:check -Dmaven.test.skip=true`.
+Protokoll: `target/yarn-parity-build.log`. Das Linux-App-Image wurde
+mit gebündelter Laufzeit und den benötigten JSON-Bibliotheken erstellt.
+Paketprotokoll: `target/yarn-parity-package.log`. Native Windows- und macOS-Abnahme bleiben offen.
+Vorhandene Testquellen und Vorschauhelfer sind nur angepasst, nicht ausgeführt.
+Die nachfolgenden Ergebnisse beschreiben frühere Stände.
+
+Manuelle Abnahme durch den Nutzer, in diesem Auftrag nicht ausgeführt:
+
+- Hinzufügen und Bearbeiten auf Zentrierung und fehlendes Tabellenblinken prüfen.
+- Farbe wählen, speichern, in der Liste ansehen und wieder entfernen. Alttexte
+  bei einer reinen Notizänderung erhalten. Ausgewählte Zeilen müssen lesbar sein.
+- Großes Foto, kleines Foto, transparentes PNG und gedrehtes Handyfoto auswählen.
+  Originaldateien bleiben gleich, neue gespeicherte Kopien haben höchstens
+  1600 Pixel Kantenlänge. Abbrechen oder Fehler erhalten den Entwurf.
+- Die Fotoauswahl in einem anderen Eintrag und nach Neustart erneut öffnen.
+  Der bestätigte Ordner soll erhalten bleiben, Abbrechen darf ihn nicht ändern.
+- Ganze Sammlung bei aktivem Filter exportieren. Status
+  kontrollieren, wieder importieren und mehrfachen Import ohne zusätzliche
+  Duplikate durchführen. Ungültige Dateien dürfen keine Teilimporte hinterlassen.
+- Einträge mit gleichen Texten und Fotos, aber anderem Status getrennt erhalten.
+- Überschrittene Text-, Eintrags-, Foto- und Dateigrenzen müssen eine Erklärung
+  liefern. Bereits vorhandene größere Bestände dürfen nicht gekürzt werden.
+- Erststart ohne Spracheinstellung bei deutscher Systemsprache soll Englisch
+  verwenden. Gespeicherte Sprache und ausdrücklich gewähltes Automatisch erhalten.
+
+
 ## App-Icons auf den drei Desktop-Plattformen, 31. Oktober 2026
 
 Vorhandene Motive in zusätzliche Fenstergrößen, Windows-ICO und macOS-ICNS

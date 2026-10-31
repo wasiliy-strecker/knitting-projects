@@ -1,12 +1,23 @@
 package de.appfabrik.strickprojekt.ui;
 
+import de.appfabrik.strickprojekt.application.CollectionExport;
+import de.appfabrik.strickprojekt.application.CollectionImport;
+import de.appfabrik.strickprojekt.application.CollectionLimitException;
+import de.appfabrik.strickprojekt.application.ImportException;
 import de.appfabrik.strickprojekt.application.ProjectService;
 import de.appfabrik.strickprojekt.domain.Project;
 import de.appfabrik.strickprojekt.i18n.Messages;
+import de.appfabrik.strickprojekt.persistence.PhotoDirectoryPreferences;
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,10 +25,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -25,12 +39,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 final class MainWindow {
   private final Messages messages;
   private final Stage stage;
   private final ProjectService service;
+  private final CollectionExport exports;
+  private final CollectionImport imports;
+  private final PhotoDirectoryPreferences photoDirectories;
+  private final EventHandler<InputEvent> editorInputBlocker = event -> event.consume();
+  private final Button exportCollection = new Button();
+  private final Button importProjects = new Button();
   private final AsyncTasks tasks;
   private final TableView<Project> table = new TableView<>();
   private final TextField search = new TextField();
@@ -47,7 +70,6 @@ final class MainWindow {
   private final Button add = new Button();
   private final Button edit = new Button();
   private final Button delete = new Button();
-  private final Button reload = new Button();
   private final List<Project> projects = new ArrayList<>();
   private boolean busy;
   private boolean ready;
@@ -57,9 +79,12 @@ final class MainWindow {
   MainWindow(
       Stage stage,
       ProjectService service,
+      CollectionExport exports,
+      CollectionImport imports,
       AsyncTasks tasks,
       Messages messages,
       de.appfabrik.strickprojekt.persistence.LanguagePreferences preferences,
+      PhotoDirectoryPreferences photoDirectories,
       String languageChoice,
       boolean languageReadFailed) {
     this.messages = messages;
@@ -71,7 +96,14 @@ final class MainWindow {
     add.setText("+  " + messages.text("project.add"));
     edit.setText(messages.text("action.edit"));
     delete.setText(messages.text("action.delete"));
-    reload.setText(messages.text("action.reload"));
+    exportCollection.setText(messages.text("backup.action.export"));
+    exportCollection.setId("export-collection");
+    exportCollection.setMinWidth(Region.USE_PREF_SIZE);
+    exportCollection.setOnAction(event -> exportCollection());
+    importProjects.setText(messages.text("backup.action.import"));
+    importProjects.setId("import-collection");
+    importProjects.setMinWidth(Region.USE_PREF_SIZE);
+    importProjects.setOnAction(event -> importCollection());
     language.setText(messages.text("language.title"));
     language.setId("language-settings");
     language.setOnAction(
@@ -94,11 +126,13 @@ final class MainWindow {
     count.setId("project-count");
     edit.setId("edit-project");
     delete.setId("delete-project");
-    reload.setId("reload-projects");
     this.stage = stage;
     this.service = service;
+    this.exports = exports;
+    this.imports = imports;
+    this.photoDirectories = photoDirectories;
     this.tasks = tasks;
-    Label heading = new Label("StrickProjekt");
+    Label heading = new Label("Knitting Projects");
     heading.getStyleClass().add("app-heading");
     Label subname = new Label(messages.text("app.subtitle"));
     subname.getStyleClass().add("muted");
@@ -131,7 +165,7 @@ final class MainWindow {
     projectStatus.setMinWidth(125);
     table.getColumns().add(projectStatus);
     table.getColumns().add(column(messages.text("field.materialShort"), Project::material, 190));
-    table.getColumns().add(column(messages.text("field.color"), Project::color, 170));
+    table.getColumns().add(colorColumn());
     table.getColumns().add(column(messages.text("field.location"), Project::location, 240));
     table
         .getSelectionModel()
@@ -199,16 +233,14 @@ final class MainWindow {
     status.setMaxWidth(Double.MAX_VALUE);
     status.setMinWidth(0);
     HBox.setHgrow(status, Priority.ALWAYS);
-    reload.setOnAction(event -> load());
 
-    reload.setMinWidth(Region.USE_PREF_SIZE);
     MenuItem privacy = new MenuItem(messages.text("privacy.title"));
     privacy.setOnAction(event -> new PrivacyDialog(stage, messages).show());
     MenuButton info = new MenuButton(messages.text("info.title"), null, privacy);
     info.setId("app-info");
     info.setMinWidth(Region.USE_PREF_SIZE);
     language.setMinWidth(Region.USE_PREF_SIZE);
-    HBox footer = new HBox(16, status, info, language, reload);
+    HBox footer = new HBox(12, status, info, language, exportCollection, importProjects);
     footer.setAlignment(Pos.CENTER_LEFT);
     VBox details = new VBox(6, noteHeading, note);
     HBox.setHgrow(details, Priority.ALWAYS);
@@ -231,7 +263,7 @@ final class MainWindow {
               search.requestFocus();
               search.selectAll();
             });
-    stage.setTitle("StrickProjekt");
+    stage.setTitle("Knitting Projects");
     UiSupport.icon(stage);
     stage.setMinWidth(860);
     stage.setMinHeight(700);
@@ -253,6 +285,49 @@ final class MainWindow {
     column.setCellValueFactory(cell -> new ReadOnlyStringWrapper(value.apply(cell.getValue())));
     column.setPrefWidth(width);
     column.setSortable(false);
+    return column;
+  }
+
+  private TableColumn<Project, String> colorColumn() {
+    TableColumn<Project, String> column = column(messages.text("field.color"), Project::color, 170);
+    column.setCellFactory(
+        ignored ->
+            new TableCell<>() {
+              private final Rectangle swatch = new Rectangle(22, 22);
+              private final Label code = new Label();
+              private final HBox content = new HBox(8, swatch, code);
+
+              {
+                swatch.setArcWidth(6);
+                swatch.setArcHeight(6);
+                swatch.setStroke(Color.web("#a7aaa3"));
+                content.setAlignment(Pos.CENTER_LEFT);
+                code.getStyleClass().add("color-code");
+              }
+
+              @Override
+              protected void updateItem(String value, boolean empty) {
+                super.updateItem(value, empty);
+                setText(null);
+                setGraphic(null);
+                setTooltip(null);
+                setAccessibleText(null);
+                if (empty || value == null) {
+                  return;
+                }
+                Color selected = ProjectColors.parse(value);
+                String label = value.isEmpty() ? messages.text("color.none") : value;
+                setAccessibleText(messages.text("field.color") + ": " + label);
+                setTooltip(new Tooltip(label));
+                if (selected == null) {
+                  setText(value.isEmpty() ? "—" : value);
+                } else {
+                  swatch.setFill(selected);
+                  code.setText(value);
+                  setGraphic(content);
+                }
+              }
+            });
     return column;
   }
 
@@ -326,11 +401,11 @@ final class MainWindow {
     if (!ready || busy || loadFailed || (editor != null && editor.isShowing())) {
       return;
     }
-    setBusy(true);
+    setEditorOpening(true);
     tasks.submit(
         () -> project == null ? null : service.photo(project.id()),
         photo -> {
-          setBusy(false);
+          setEditorOpening(false);
           editor =
               new ProjectEditor(
                   stage,
@@ -348,13 +423,24 @@ final class MainWindow {
                             : messages.text("stored"),
                         false);
                   },
-                  messages);
+                  messages,
+                  photoDirectories);
           editor.show();
         },
         failure -> {
-          setBusy(false);
+          setEditorOpening(false);
           showStatus(UiSupport.message(failure, messages), true);
         });
+  }
+
+  private void setEditorOpening(boolean value) {
+    busy = value;
+    // Block duplicate actions without flashing the list's disabled appearance.
+    if (value) {
+      stage.getScene().addEventFilter(InputEvent.ANY, editorInputBlocker);
+    } else {
+      stage.getScene().removeEventFilter(InputEvent.ANY, editorInputBlocker);
+    }
   }
 
   private void editSelected() {
@@ -362,6 +448,82 @@ final class MainWindow {
     if (selected != null) {
       openEditor(selected);
     }
+  }
+
+  private void exportCollection() {
+    if (busy || !ready || loadFailed || (editor != null && editor.isShowing())) {
+      return;
+    }
+    FileChooser chooser = new FileChooser();
+    chooser.setTitle(messages.text("backup.export.title"));
+    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+    chooser.setInitialFileName(
+        "knitting-projects-"
+            + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"))
+            + ".json");
+    File selected = chooser.showSaveDialog(stage);
+    if (selected == null) {
+      return;
+    }
+    File target =
+        selected.getName().toLowerCase(Locale.ROOT).endsWith(".json")
+            ? selected
+            : new File(selected.getPath() + ".json");
+    setBusy(true);
+    showStatus(messages.text("backup.export.busy"), false);
+    tasks.submit(
+        () -> exports.export(target.toPath()),
+        total -> {
+          setBusy(false);
+          showStatus(messages.text("backup.export.saved", total, target.getName()), false);
+        },
+        failure -> {
+          setBusy(false);
+          showStatus(
+              failure instanceof CollectionLimitException
+                  ? UiSupport.message(failure, messages)
+                  : messages.text(
+                      failure instanceof FileAlreadyExistsException
+                          ? "backup.export.exists"
+                          : "backup.export.failed"),
+              true);
+        });
+  }
+
+  private void importCollection() {
+    if (busy || !ready || loadFailed || (editor != null && editor.isShowing())) {
+      return;
+    }
+    FileChooser chooser = new FileChooser();
+    chooser.setTitle(messages.text("backup.import.title"));
+    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+    File selected = chooser.showOpenDialog(stage);
+    if (selected == null) {
+      return;
+    }
+    setBusy(true);
+    showStatus(messages.text("backup.import.busy"), false);
+    tasks.submit(
+        () -> imports.importFile(selected.toPath()),
+        result -> {
+          projects.clear();
+          projects.addAll(result.projects());
+          setBusy(false);
+          search.clear();
+          refresh(null);
+          showStatus(messages.text("backup.import.saved", result.added(), result.skipped()), false);
+        },
+        failure -> {
+          setBusy(false);
+          showStatus(
+              failure instanceof CollectionLimitException
+                  ? UiSupport.message(failure, messages)
+                  : messages.text(
+                      failure instanceof ImportException problem
+                          ? "backup.import.error." + problem.code().name()
+                          : "backup.import.failed"),
+              true);
+        });
   }
 
   private void deleteSelected() {
@@ -399,11 +561,12 @@ final class MainWindow {
   private void setBusy(boolean value) {
     busy = value;
     table.setDisable(value);
-    reload.setDisable(value);
     updateButtons();
   }
 
   private void updateButtons() {
+    exportCollection.setDisable(busy || !ready || loadFailed);
+    importProjects.setDisable(busy || !ready || loadFailed);
     add.setDisable(busy || !ready || loadFailed);
     language.setDisable(busy || !ready || loadFailed);
     boolean unavailable = busy || loadFailed || table.getSelectionModel().getSelectedItem() == null;

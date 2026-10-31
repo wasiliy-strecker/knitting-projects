@@ -1,4 +1,4 @@
-StrickProjekt rassemble vos idées de tricot et de crochet. Notez le nom du projet, le fil ou la matière, la couleur, l’emplacement et vos notes personnelles. Ajoutez une photo facultative et choisissez Prévu, Commencé ou Terminé.
+Knitting Projects rassemble vos idées de tricot et de crochet. Notez le nom du projet, le fil ou la matière, la couleur, l’emplacement et vos notes personnelles. Ajoutez une photo facultative et choisissez Prévu, Commencé ou Terminé.
 
 Recherchez dans les cinq champs de texte, modifiez vos projets et consultez leur statut. Les photos JPEG et PNG sont enregistrées avec chaque projet. Vos fichiers d’origine restent inchangés.
 

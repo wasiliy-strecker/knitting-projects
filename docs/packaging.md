@@ -1,3 +1,7 @@
+Aktueller öffentlicher Name: **Knitting Projects**. Erstes Store-Release auf Deutsch.
+Die App startet bei fehlender Spracheinstellung auf Englisch. Bestehende
+Vorschauordner dokumentieren den damaligen Stand und wurden nicht neu erzeugt.
+
 # Paketierung und spätere Stores
 
 ## Voraussetzungen
@@ -17,7 +21,7 @@ ist über `java.se` enthalten und stellt die ImageIO-Decoder bereit.
 
 ```bash
 ./scripts/package.sh app-image
-./target/app-image/StrickProjekt/bin/StrickProjekt
+"./target/app-image/Knitting Projects/bin/Knitting Projects"
 ```
 
 Linux dient hier als Entwicklungs- und Prüfplattform. Ein App-Image ist ein
@@ -47,7 +51,7 @@ Auf der jeweiligen Mac-Architektur mit passendem Temurin-JDK 21.0.13+9 ausführe
 ```bash
 ./mvnw verify
 ./scripts/package.sh app-image
-open target/app-image/StrickProjekt.app
+open "target/app-image/Knitting Projects.app"
 ./scripts/package.sh dmg
 ```
 
