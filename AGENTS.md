@@ -11,8 +11,8 @@ Store-Kennungen. Den App-Anteil aus dem englischen Produktnamen ableiten,
 nicht aus einem deutschen Arbeitstitel. Organisationspräfix und Plattformsyntax
 beibehalten. Die zentrale AGENTS.md enthält die appübergreifende Regel.
 
-Für die besprochene neue Apple-Registrierung von Knitting Projects ist
-`de.appfabrik.knittingprojects` vorgesehen. Der bisherige macOS-Pakethelfer
+Für die neue Apple-Registrierung von Knitting Projects ist
+`de.appfabrik.knittingprojects` vom Nutzer bestätigt. Der bisherige macOS-Pakethelfer
 verwendet noch `de.appfabrik.strickprojekt`. Vor dem zugehörigen Store-Build
 die Bundle-Konfiguration und Paketierungsanleitung konsistent anpassen.
 Die ältere Vorgabe zum Erhalt der Paket-ID gilt weiterhin für bestehende
@@ -133,3 +133,18 @@ Sammlung öffnen. Ungespeicherte Entwürfe vor Neustart schützen.
 
 Der Nutzer übernimmt in diesem Auftrag die Tests selbst. Paketbau mit
 `-Dmaven.test.skip=true` und statische Analyse, keine Test- oder GUI-Suite.
+
+## Mac-Store-Inhalte vom 31. Oktober 2026
+
+Der Nutzer hat ausschließlich Store-Inhalte beauftragt und die registrierte
+Bundle-ID `de.appfabrik.knittingprojects` bestätigt. Deutsche Feldtexte und vier
+Linux-Bildentwürfe werden mit `scripts/mac_store_content.py` vorbereitet.
+Der Helfer verwendet eigene temporäre Daten und Xvfb. Seine gezielten
+Prüfungen des synthetischen Imports und UI-Exports gehören zur Asset-Erstellung.
+Eine vollständige Release-Testserie wird für diese Inhaltsänderung nicht wiederholt.
+
+Die Übergabe ist ein neuer Ordner ohne ZIP und übernimmt ausschließlich
+ausgewählte Store-Dateien. Persönliche unversionierte Exporte bleiben außen vor.
+Keine Mac-Bauhelfer, Signierung, Pakete oder Uploads in diesem Auftrag.
+Die noch historische Bundle-ID im normalen Pakethelfer wird erst im späteren
+technischen Releaseauftrag ausgerichtet. Anwendung und Datenpfade unverändert.

@@ -1,5 +1,11 @@
 # Knitting Projects
 
+Die [deutschen Mac-App-Store-Inhalte](docs/mac-app-store-fields.md) enthalten
+Feldtexte zum Einfügen, vier reproduzierbare Linux-Bildentwürfe, eine synthetische
+Beispielsammlung und den Datenschutzexport. Diese Inhaltsvorbereitung ist
+getrennt von Mac-Paketierung, Signierung und nativer Abnahme. Die bestätigte
+neue Apple-Bundle-ID lautet `de.appfabrik.knittingprojects`.
+
 Deine Ideen. Masche für Masche. Verwalte kleine Strick- und Häkelprojekte mit
 Projektname, Garn oder Material, Farbe, Aufbewahrungsort, Notiz und einem
 optionalen Foto. Der Status zeigt **Geplant**, **Angefangen** oder **Fertig**.

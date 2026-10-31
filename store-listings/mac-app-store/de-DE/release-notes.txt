@@ -1,0 +1,3 @@
+Erste Version von Knitting Projects für macOS.
+
+Verwalte Strick- und Häkelprojekte mit Name, Material, Farbe, Aufbewahrungsort, Notizen und einem optionalen Foto. Behalte mit Geplant, Angefangen und Fertig den Projektstatus im Blick. Suche und sortiere deine Projekte und sichere die ganze Sammlung einschließlich Fotos und Status als JSON. Alle Daten werden lokal gespeichert.
