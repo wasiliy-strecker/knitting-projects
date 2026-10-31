@@ -1,5 +1,22 @@
 # Prüfbericht
 
+## Feste Spaltenreihenfolge, 31. Oktober 2026
+
+Das Verschieben sämtlicher Spalten ist über `TableColumn.setReorderable(false)`
+gesperrt. Die Reihenfolge lautet Projektname, Status, Material, Farbe,
+Aufbewahrungsort. Die Sortierung der Einträge per Klick zwischen A–Z und Z–A
+und die dauerhaften Richtungspfeile bleiben erhalten.
+
+Manuelle Abnahme durch den Nutzer: Jede Überschrift seitlich ziehen.
+Keine Spalte darf ihre Position wechseln. Anschließend jede Überschrift
+mehrfach anklicken und wechselnde alphabetische Sortierung prüfen.
+
+Gemäß app-lokaler Vorgabe keine Test- oder GUI-Suite. Formatter, Compiler-Lint,
+Enforcer, Paketbau und SpotBugs bestanden mit
+`./mvnw --batch-mode --no-transfer-progress spotless:apply package spotbugs:check -Dmaven.test.skip=true`.
+Protokoll:
+`target/fixed-column-order-build.log`.
+
 ## Dauerhafte Sortierpfeile, 31. Oktober 2026
 
 Der Nutzer meldete den verschwindenden Pfeil nach wiederholtem Sortieren.

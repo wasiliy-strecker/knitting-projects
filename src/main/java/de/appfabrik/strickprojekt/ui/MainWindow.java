@@ -289,6 +289,7 @@ final class MainWindow {
     TableColumn<Project, String> column = new TableColumn<>(name);
     column.setCellValueFactory(cell -> new ReadOnlyStringWrapper(value.apply(cell.getValue())));
     column.setPrefWidth(width);
+    column.setReorderable(false);
     Collator collator = Collator.getInstance(messages.locale());
     collator.setStrength(Collator.SECONDARY);
     column.setComparator(collator::compare);

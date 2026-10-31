@@ -118,6 +118,8 @@ Die Spaltenüberschriften sortieren die Liste per Klick nach Projektname, Status
 Material, Farbe oder Aufbewahrungsort. Jede Überschrift zeigt dauerhaft ein
 Pfeilpaar. Die aktive Richtung wird hervorgehoben. Wiederholte Klicks wechseln
 immer zwischen A–Z und Z–A, ohne die Sortierung beim dritten Klick aufzuheben.
+Die Spalten bleiben fest in der Reihenfolge Projektname, Status, Material,
+Farbe und Aufbewahrungsort. Überschriften lassen sich nicht verschieben.
 Standard ist Projektname aufsteigend. Texte werden passend zur App-Sprache
 alphabetisch und ohne Unterscheidung der Groß- und Kleinschreibung verglichen.
 Status verwendet den angezeigten übersetzten Text, Farbe den Farbcode oder
