@@ -115,9 +115,9 @@ Groß- und Kleinschreibung, einschließlich Umlauten. Leeren zeigt alle Projekte
 Löschen verlangt eine Bestätigung.
 
 Die Spaltenüberschriften sortieren die Liste per Klick nach Projektname, Status,
-Material, Farbe oder Aufbewahrungsort. Ein Pfeil zeigt aufsteigende oder
-absteigende Reihenfolge. Die native Tabellenbedienung wechselt von aufsteigend
-zu absteigend und hebt beim nächsten Klick die Spaltensortierung wieder auf.
+Material, Farbe oder Aufbewahrungsort. Jede Überschrift zeigt dauerhaft ein
+Pfeilpaar. Die aktive Richtung wird hervorgehoben. Wiederholte Klicks wechseln
+immer zwischen A–Z und Z–A, ohne die Sortierung beim dritten Klick aufzuheben.
 Standard ist Projektname aufsteigend. Texte werden passend zur App-Sprache
 alphabetisch und ohne Unterscheidung der Groß- und Kleinschreibung verglichen.
 Status verwendet den angezeigten übersetzten Text, Farbe den Farbcode oder

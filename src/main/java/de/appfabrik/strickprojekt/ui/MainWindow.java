@@ -170,6 +170,7 @@ final class MainWindow {
     table.getColumns().add(column(messages.text("field.materialShort"), Project::material, 190));
     table.getColumns().add(colorColumn());
     table.getColumns().add(column(messages.text("field.location"), Project::location, 240));
+    ProjectTableSorting.configure(table);
     table.getSortOrder().add(projectName);
     table
         .getSelectionModel()

@@ -1,5 +1,37 @@
 # Prüfbericht
 
+## Dauerhafte Sortierpfeile, 31. Oktober 2026
+
+Der Nutzer meldete den verschwindenden Pfeil nach wiederholtem Sortieren.
+Ursache war der dritte Zustand der nativen Tabellenbedienung, der die aktive
+Spalte aus der Sortierung entfernt. Der Klick setzt die betroffene Spalte jetzt
+wieder auf aufsteigend. Wiederholte Klicks wechseln dadurch zwischen A–Z und Z–A.
+Die Änderung geschieht nach dem nativen Loslassen der Maustaste und außerhalb
+der Listenänderung. Spaltenbreiten und Ziehen der Überschriften bleiben nativ.
+
+Jede der fünf Überschriften zeigt dauerhaft zwei Pfeile neben ihrem Namen.
+Die aktive Richtung ist hervorgehoben. Projektname, übersetzter Status, Material,
+Farbcode beziehungsweise Farbtext und Aufbewahrungsort verwenden weiterhin
+denselben sprachabhängigen alphabetischen Vergleich ohne Groß-/Kleinschreibung.
+
+Manuelle Abnahme durch den Nutzer, noch nicht ausgeführt:
+
+- Jede der fünf Überschriften mindestens sechsmal anklicken. A–Z und Z–A müssen
+  abwechseln, alle Pfeilpaare bleiben sichtbar und die aktive Richtung stimmt.
+- Zwischen allen Spalten wechseln. Jede neue Spalte beginnt aufsteigend.
+  Den angezeigten Status alphabetisch vergleichen, nicht nach Projektfortschritt.
+- Eine Zeile auswählen, umsortieren, suchen, die Suche leeren und einen
+  Sortierwert bearbeiten. Auswahl, Notiz, Foto und Sortierrichtung prüfen.
+- Leere Listen und Suchtreffer, gleiche Werte, Umlaute und gemischte
+  Großschreibung sowie veränderte Spalten- und Fensterbreiten prüfen.
+
+Gemäß app-lokaler Vorgabe keine Test- oder GUI-Suite. Formatter, Compiler-Lint,
+Enforcer, Paketbau und SpotBugs bestanden mit
+`./mvnw --batch-mode --no-transfer-progress spotless:apply package spotbugs:check -Dmaven.test.skip=true`.
+Protokoll: `target/persistent-sorting-build.log`.
+Das lokale Linux-App-Image wurde mit dem neuen App-JAR und der Anleitung
+aktualisiert und nach regulärem Schließen der bisherigen App wieder geöffnet.
+
 ## Sortierbare Projektliste, 31. Oktober 2026
 
 Alle fünf Spalten verwenden die native JavaFX-Sortierung mit Richtungspfeil,
