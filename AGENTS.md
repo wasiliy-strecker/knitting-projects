@@ -148,3 +148,11 @@ ausgewählte Store-Dateien. Persönliche unversionierte Exporte bleiben außen v
 Keine Mac-Bauhelfer, Signierung, Pakete oder Uploads in diesem Auftrag.
 Die noch historische Bundle-ID im normalen Pakethelfer wird erst im späteren
 technischen Releaseauftrag ausgerichtet. Anwendung und Datenpfade unverändert.
+
+## Getrennte App-Informationen, 1. November 2026
+
+„Info“ enthält drei getrennte Einträge: Über die App, Datenschutz und Lizenzen.
+Alle eigenen Erläuterungen und Menütexte in den sechs vorhandenen Katalogen
+pflegen. Die vollständige Datenschutzerklärung bleibt identisch zum Textexport.
+Original-Lizenztexte unverändert einbetten. Neue Fremdkomponenten auch im
+app-lokalen Lizenzindex ergänzen. Versionsangaben stammen aus dem Maven-Build.
